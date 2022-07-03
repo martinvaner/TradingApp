@@ -1,0 +1,20 @@
+z netu nastahuje historická data
+
+3 endpointy
+	/data/getdata/{symbol}
+		- GET
+		- na vstupu dostane ticker symbol
+		- vrátí historická data v odpovědi - 200 záznamů
+
+	/data/subscribe
+		- POST
+		- v body dostane json s ticker symbols
+		- do redis vloží historická data všech ticker symbolů, které dostane
+		- zaregistruje službu - každých 24 hodin se aktualizují data
+
+	/data/unsubscribe
+		- POST
+		- v body dostane json s ticker symbols
+		- ze služby odebere zadané tickety - ty už nechceme sledovat
+
+
