@@ -1,4 +1,7 @@
+using Downloader.Application.Helpers;
 using Downloader.Application.Repository.Interfaces;
+using Downloader.Application.Services;
+using Downloader.Application.Services.Interfaces;
 using Downloader.Infrastructure.MappingProfiles;
 using Downloader.Infrastructure.Redis;
 using Downloader.Infrastructure.Settings;
@@ -55,6 +58,7 @@ namespace Downloader
 			services.AddHttpClient<ITickerRepository, YahooApiRepository>();
 			services.AddTransient<ITickerRepository, YahooApiRepository>();
 			services.AddTransient<ITickerWritableRepository, RedisRepository>();
+			services.AddTransient<IDownloadService, DownloadService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,4 +1,7 @@
-﻿using Downloader.Application.Services.Interfaces;
+﻿using Downloader.Application.Helpers;
+using Downloader.Application.Repository.Interfaces;
+using Downloader.Application.Services.Interfaces;
+using Downloader.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +13,53 @@ namespace Downloader.Application.Services
 {
 	public class DownloadService : IDownloadService
 	{
-
-		public DownloadService()
+		private readonly ITickerRepository apiRepository;
+		private readonly ITickerWritableRepository cacheRepository;
+		private readonly TickerDataHelper tickerDataHelper;
+		public DownloadService(ITickerRepository apiRepository, ITickerWritableRepository cacheRepository)
 		{
-
+			this.apiRepository = apiRepository;
+			this.cacheRepository = cacheRepository;
+			this.tickerDataHelper = new TickerDataHelper();
 		}
 
-		public async Task RegisterBackgroudDataDownload(double interval)
+		public async Task<Ticker> DownloadData(string symbol)
 		{
-			
-			var timer = new Timer(interval);
-			timer.Elapsed += RunBackgroundDataDownload; // TODO: shouldnt be there await?
-			timer.Start();
-		}
+			//get ticker data
 
-		private void RunBackgroundDataDownload(object sender, ElapsedEventArgs eventArgs)
-		{
-			// get latest data
+			// is it cached? - get it from cache (check date)
+			Ticker cachedTicker = await cacheRepository.Get(symbol);
+			if(cachedTicker != null)
+			{
+				// check date
+				if((DateTime.Now - cachedTicker.Date).Hours < 24) 
+				{
+					return cachedTicker;
+				}
+			}
 
+			// if it is not cached or date is older then 24h - get it from api and write it to cache
+			Ticker apiTicker = null;
+			try
+			{
+				apiTicker = await apiRepository.Get(symbol);
+			}
+			catch(Exception e)
+			{
+				// TODO: maybe log here
+				throw;
+			}
 
-			// add latest price
-			// delete oldest price
-			// recompute SME
-			// raise event that will get FE know about change of data
+			if (apiTicker != null)
+			{
+				// cache it and return
+				tickerDataHelper.PrepareTickerData(ref apiTicker);
+				await cacheRepository.Write(apiTicker);
+
+				return apiTicker;
+			}
+
+			return null;
 		}
 	}
 }

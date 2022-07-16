@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Downloader.Application.Services
 {
@@ -21,6 +22,32 @@ namespace Downloader.Application.Services
 		{
 			this.tickerWritableRepository = tickerWritableRepository;
 			this.tickerRepository = tickerRepository;
+		}
+
+		public async Task RegisterBackgroudDataDownload(double interval)
+		{
+			// make event that triggers every 24 hours - download new data from api
+
+
+			var timer = new Timer(interval);
+			timer.Elapsed += RunBackgroundDataDownload; // TODO: shouldnt be there await?
+			timer.Start();
+		}
+
+		/// <summary>
+		/// Method that will be triggered every 24 hours
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="eventArgs"></param>
+		private void RunBackgroundDataDownload(object sender, ElapsedEventArgs eventArgs)
+		{
+			// get latest data
+
+
+			// add latest price
+			// delete oldest price
+			// recompute SME
+			// raise event that will get FE know about change of data
 		}
 
 		public async Task RegisterTicker(string tickerName)

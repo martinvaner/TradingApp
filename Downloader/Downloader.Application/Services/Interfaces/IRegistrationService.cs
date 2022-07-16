@@ -14,5 +14,7 @@ namespace Downloader.Application.Services.Interfaces
 	{
 		Task RegisterTicker(string tickerName);
 		Task RegisterTickers(IEnumerable<string> tickersNames);
+		Task RegisterBackgroudDataDownload(double timeSpan);
+
 	}
 }

@@ -56,8 +56,8 @@ namespace Downloader.Infrastructure.YahooApi
 			}
 			else
 			{
-				// TODO: throw some exception
-				return null;
+				// TODO: throw some better exception
+				throw new Exception("Something went wrong.");
 			}
 
 			return ticker;
