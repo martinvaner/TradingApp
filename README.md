@@ -1,3 +1,5 @@
+IN PROGRESS
+
 Stock analytics
 - using clean architecture
 
