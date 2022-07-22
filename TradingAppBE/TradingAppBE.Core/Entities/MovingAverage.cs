@@ -8,8 +8,8 @@ namespace TradingAppBE.Core.Entities
 {
 	public class MovingAverage
 	{
-		public double SMA200 { get; set; }
-		public double SMA50 { get; set; }
+		public decimal SMA200 { get; set; }
+		public decimal SMA50 { get; set; }
 
 		// TODO: ExponentialMovingAverage
 	}

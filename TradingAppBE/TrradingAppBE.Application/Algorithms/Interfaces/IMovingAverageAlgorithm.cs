@@ -8,6 +8,6 @@ namespace TrradingAppBE.Application.Algorithms.Interfaces
 {
 	public interface IMovingAverageAlgorithm
 	{
-		double Calculate(int numberOfDays, double[] prices);
+		decimal Calculate(int numberOfDays, decimal[] prices);
 	}
 }

@@ -10,6 +10,6 @@ namespace TradingAppBE.Infrastructure.DTOs
 	public class PriceDTO
 	{
 		[JsonPropertyName("close")]
-		public double Close { get; set; }
+		public decimal Close { get; set; }
 	}
 }

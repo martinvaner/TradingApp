@@ -12,7 +12,7 @@ namespace TrradingAppBE.Application.Algorithms
 	/// </summary>
 	public class SMA : IMovingAverageAlgorithm
 	{
-		public double Calculate(int numberOfDays, double[] prices)
+		public decimal Calculate(int numberOfDays, decimal[] prices)
 		{
 			if(prices.Length < numberOfDays)
 			{
@@ -20,7 +20,7 @@ namespace TrradingAppBE.Application.Algorithms
 				throw new Exception("Not enough data provided.");
 			}
 
-			double sum = 0;
+			decimal sum = 0;
 			for(int i = 0; i < numberOfDays; i++)
 			{
 				sum += prices[i];

@@ -20,9 +20,9 @@ namespace TrradingAppBE.Application.Services
 
 		public Analytics CalculateAnalytics(Ticker ticker)
 		{
-			double[] prices = ticker.Prices.Select(x => x.Close).ToArray();
-			double sma200 = movingAverageAlgorithm.Calculate(200, prices);
-			double sma50 = movingAverageAlgorithm.Calculate(50, prices);
+			decimal[] prices = ticker.Prices.Select(x => x.Close).ToArray();
+			decimal sma200 = movingAverageAlgorithm.Calculate(200, prices);
+			decimal sma50 = movingAverageAlgorithm.Calculate(50, prices);
 
 			Analytics analytics = new Analytics();
 			analytics.MovingAverage = new MovingAverage()

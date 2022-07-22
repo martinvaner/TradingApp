@@ -8,6 +8,6 @@ namespace TradingAppBE.Core.Entities
 {
 	public class Price
 	{
-		public double Close { get; set; }
+		public decimal Close { get; set; }
 	}
 }
