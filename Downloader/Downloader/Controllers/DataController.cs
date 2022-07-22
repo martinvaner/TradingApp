@@ -39,7 +39,7 @@ namespace Downloader.Controllers
 			}
 		}
 
-		[HttpPut("subscribe")]
+		[HttpPost("subscribe")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		public ActionResult Subscribe(Tickers tickers)
 		{
@@ -49,7 +49,7 @@ namespace Downloader.Controllers
 			return NotFound();
 		}
 
-		[HttpPut("unsubscribe")]
+		[HttpDelete("unsubscribe")]
 		[Consumes(MediaTypeNames.Application.Json)]
 		public ActionResult Unsubscribe(Tickers tickers)
 		{

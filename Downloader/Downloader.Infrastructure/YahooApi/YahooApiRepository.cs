@@ -28,8 +28,6 @@ namespace Downloader.Infrastructure.YahooApi
 		public async Task<Ticker> Get(string tickerName)
 		{
 			Ticker ticker = null;
-			string hos = apiSettings.Host;
-			string keyyy = apiSettings.Key;
 
 			var request = new HttpRequestMessage
 			{

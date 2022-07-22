@@ -13,7 +13,7 @@ z netu nastahuje historická data
 		- zaregistruje službu - každých 24 hodin se aktualizují data
 
 	/data/unsubscribe
-		- POST
+		- DELETE
 		- v body dostane json s ticker symbols
 		- ze služby odebere zadané tickety - ty už nechceme sledovat
 

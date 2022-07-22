@@ -13,8 +13,7 @@ namespace Downloader.Infrastructure.MappingProfiles
 	{
 		public PriceProfile()
 		{
-			CreateMap<PriceDTO, Price>();
-			CreateMap<Price, PriceDTO>();
+			CreateMap<PriceDTO, Price>().ReverseMap();
 		}
 	}
 }

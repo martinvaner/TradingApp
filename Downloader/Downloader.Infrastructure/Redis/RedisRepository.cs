@@ -24,19 +24,14 @@ namespace Downloader.Infrastructure.Redis
 			string value = await distributedCache.GetStringAsync(tickerName);
 			if (string.IsNullOrEmpty(value)) return null; // TODO: rewrite to exception
 
-			Ticker ticker = new Ticker()
-			{
-				Symbol = tickerName,
-				Prices = JsonSerializer.Deserialize<Price[]>(value)
-			};
+			Ticker ticker = JsonSerializer.Deserialize<Ticker>(value);
 
 			return ticker;
 		}
 
 		public async Task Write(Ticker ticker)
 		{
-			string s = JsonSerializer.Serialize<Price[]>(ticker.Prices);
-			await distributedCache.SetStringAsync(ticker.Symbol, JsonSerializer.Serialize<Price[]>(ticker.Prices));
+			await distributedCache.SetStringAsync(ticker.Symbol, JsonSerializer.Serialize<Ticker>(ticker));
 		}
 	}
 }
