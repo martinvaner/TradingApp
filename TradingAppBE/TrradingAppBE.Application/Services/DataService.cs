@@ -15,12 +15,15 @@ namespace TrradingAppBE.Application.Services
 		private readonly ITickerRepository redisRepository;
 		private readonly IDownloaderApiRepository downloader;
 		private readonly IAnalyticsService analyticsService;
+		private readonly IUserTickersRepository userTickersRepository;
 
-		public DataService(ITickerRepository redisRepository, IDownloaderApiRepository downloader, IAnalyticsService analyticsService)
+		public DataService(ITickerRepository redisRepository, IDownloaderApiRepository downloader,
+				IAnalyticsService analyticsService, IUserTickersRepository userTickersRepository)
 		{
 			this.redisRepository = redisRepository;
 			this.downloader = downloader;
 			this.analyticsService = analyticsService;
+			this.userTickersRepository = userTickersRepository;
 		}
 
 		public async Task<Ticker> GetTickerData(string symbol)
@@ -42,6 +45,28 @@ namespace TrradingAppBE.Application.Services
 
 			ticker.Analytics = analyticsService.CalculateAnalytics(ticker);
 			return ticker;
+		}
+
+		public async Task<IEnumerable<Ticker>> GetUserTickers(string username)
+		{
+			List<Ticker> tickers = new List<Ticker>();
+
+			var userTickers = await userTickersRepository.GetUserTickers(username);
+
+			foreach(var userTicker in userTickers)
+			{
+				try
+				{
+					tickers.Add(await this.GetTickerData(userTicker));
+				}
+				catch(Exception e)
+				{
+					// intentionally blank - just continue work
+				}
+
+			}
+
+			return tickers;
 		}
 	}
 }

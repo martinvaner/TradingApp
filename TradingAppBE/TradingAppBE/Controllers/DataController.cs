@@ -21,6 +21,22 @@ namespace TradingAppBE.Controllers
 			this.dataService = dataService;
 		}
 
+		[HttpGet("getUserData/{username}")]
+		public async Task<ActionResult< IEnumerable<Ticker> >> GetUserTickers(string username)
+		{
+			try
+			{
+				var tickers = await dataService.GetUserTickers(username);
+				return Ok(tickers);
+			}
+			catch(Exception e)
+			{
+				// TODO: log here
+				System.Diagnostics.Debug.WriteLine(e.StackTrace);
+				return Problem("Something went wrong.");
+			}
+		}
+
 		[HttpGet("getData/{symbol}")]
 		public async Task<ActionResult<Ticker>> GetData(string symbol)
 		{

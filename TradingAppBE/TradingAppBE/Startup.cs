@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,7 +15,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using TradingAppBE.Infrastructure.DownloaderApi;
+using TradingAppBE.Infrastructure.EF;
 using TradingAppBE.Infrastructure.MappingProfiles;
+using TradingAppBE.Infrastructure.PostgreSQL;
 using TradingAppBE.Infrastructure.Redis;
 using TradingAppBE.Infrastructure.Settings;
 using TrradingAppBE.Application.Algorithms;
@@ -48,10 +51,14 @@ namespace TradingAppBE
 			{
 				options.Configuration = "127.0.0.1:6379"; // TODO - read it from config file
 			});
-			
+
+			// postgreDB
+			services.AddDbContext<TickersContext>();
+
 
 
 			// services
+			services.AddTransient<IUserTickersRepository, UserTickersRepository>();
 			services.AddHttpClient<IDownloaderApiRepository, DownloaderApiRepository>();
 			services.AddTransient<IMovingAverageAlgorithm, SMA>();
 			services.AddTransient<ITickerRepository, RedisRepository>();

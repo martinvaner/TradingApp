@@ -15,5 +15,12 @@ namespace TrradingAppBE.Application.Services.Interfaces
 		/// <param name="symbol">Ticker symbol</param>
 		/// <returns></returns>
 		Task<Ticker> GetTickerData(string symbol);
+
+		/// <summary>
+		/// Get tickers that are subscribed by user
+		/// </summary>
+		/// <param name="username"></param>
+		/// <returns></returns>
+		Task<IEnumerable<Ticker>> GetUserTickers(string username);
 	}
 }
