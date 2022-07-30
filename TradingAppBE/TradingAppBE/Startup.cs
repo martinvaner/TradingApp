@@ -45,6 +45,10 @@ namespace TradingAppBE
 
 			// automapper
 			services.AddAutoMapper(Assembly.GetAssembly(typeof(TickerProfile)), Assembly.GetAssembly(typeof(PriceProfile)));
+			services.AddAutoMapper(Assembly.GetAssembly(typeof(TradingAppBE.MappingProfiles.TickerProfile)),
+								Assembly.GetAssembly(typeof(TradingAppBE.MappingProfiles.PriceProfile)),
+								Assembly.GetAssembly(typeof(TradingAppBE.MappingProfiles.MovingAverageProfile)),
+								Assembly.GetAssembly(typeof(TradingAppBE.MappingProfiles.AnalyticsProfile)));
 
 			// redis
 			services.AddStackExchangeRedisCache(options =>
@@ -71,6 +75,13 @@ namespace TradingAppBE
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "TradingAppBE", Version = "v1" });
 			});
+			services.AddCors(options =>
+			{
+				options.AddDefaultPolicy(policy =>
+				{
+					policy.AllowAnyOrigin();
+				});
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,6 +97,7 @@ namespace TradingAppBE
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+			app.UseCors();
 
 			app.UseAuthorization();
 

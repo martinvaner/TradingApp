@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TradingAppBE.Model
+namespace TradingAppBE.DTOs
 {
-	public class Tickers
+	public class AnalyticsDTO
 	{
-		public string[] Names { get; set; }
+		public MovingAverageDTO MovingAverage { get; set; }
 	}
 }
