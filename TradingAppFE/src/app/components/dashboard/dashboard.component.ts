@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Ticker } from 'src/app/interfaces/Ticker';
+import { HttpService } from 'src/app/services/HttpService';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,10 +11,22 @@ export class DashboardComponent implements OnInit {
 
   tickers: Ticker[];
 
-  constructor() { }
+  constructor(private httpService: HttpService) { }
 
   ngOnInit(): void {
-    this.tickers = [
+
+    this.httpService.getUserData("vaner").subscribe({
+      next: data => {
+        console.log(data);
+        this.tickers = data;
+      },
+      error: error => {
+        console.log("Error ocurred while getting data: " + error);
+      }
+    })
+
+
+    /*this.tickers = [
       {
         symbol: 'AMZN',
         prices: [ {close: 20}, {close: 22} ],
@@ -34,7 +47,7 @@ export class DashboardComponent implements OnInit {
         prices: [ {close: 20}, {close: 22} ],
         analytics: { movingAverage: { sma200: 25, sma50: 30 } }
       }
-    ]
+    ] */
   }
 
 }
