@@ -21,3 +21,7 @@ Co hotové není:
 
 
 U projektů chybí appsettings.json, protože tam ukládám keys do api.
+
+
+Ukázka FE pro představu:
+![image](https://user-images.githubusercontent.com/32337795/182935897-19cf77c6-ba2a-43b9-92d2-93b429827725.png)
