@@ -10,5 +10,7 @@ namespace Downloader.Application.Services.Interfaces
 	public interface IDownloadService
 	{
 		Task<Ticker> DownloadData(string symbol);
+
+		Task< IEnumerable<Ticker> > Subscribe(string[] symbols);
 	}
 }

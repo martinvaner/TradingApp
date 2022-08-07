@@ -41,12 +41,21 @@ namespace Downloader.Controllers
 
 		[HttpPost("subscribe")]
 		[Consumes(MediaTypeNames.Application.Json)]
-		public ActionResult Subscribe(Tickers tickers)
+		public async Task<ActionResult<IEnumerable<Ticker>> > Subscribe(Tickers tickers)
 		{
-			// register new service - call register method from application
-			// add new tickers to TICKERS array in redis - these will be periodically updated
+			// TODO: add new tickers to TICKERS array in redis - these will be periodically updated
 
-			return NotFound();
+			try
+			{
+				var newTickers = await downloadService.Subscribe(tickers.Names);
+				return Ok(newTickers);
+			}
+			catch (Exception e)
+			{
+				// TODO: log here
+
+				return Problem("Something went wrong.");
+			}
 		}
 
 		[HttpDelete("unsubscribe")]

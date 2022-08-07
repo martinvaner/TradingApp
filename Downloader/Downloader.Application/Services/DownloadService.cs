@@ -61,5 +61,24 @@ namespace Downloader.Application.Services
 
 			return null;
 		}
+
+		public async Task< IEnumerable<Ticker> > Subscribe(string[] symbols)
+		{
+			List<Ticker> newTickers = new List<Ticker>();
+			foreach(var symbol in symbols)
+			{
+				try
+				{
+					newTickers.Add(await this.DownloadData(symbol));
+				}
+				catch(Exception e)
+				{
+					// log here
+					throw;
+				}
+			}
+
+			return newTickers;
+		}
 	}
 }
