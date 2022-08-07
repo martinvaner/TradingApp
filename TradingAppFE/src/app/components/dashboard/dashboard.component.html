@@ -1,10 +1,21 @@
 <div>
-
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
         <div *ngFor="let ticker of tickers" class="col pt-3">
-            <app-ticker-basic-info 
-                [ticker]="ticker"></app-ticker-basic-info>
+            <app-ticker-basic-info [ticker]="ticker" (tickerRemoved)="onTickerRemoved($event)"></app-ticker-basic-info>
         </div>
+    </div>
+
+    <div class="position-absolute bottom-0 end-0">
+        <form [formGroup]="addForm" (ngSubmit)="onAddTicker()">
+            <input type="text" id="tickerName" class="form-control d-inline" name="tickerName" placeholder="AMZN..."
+                formControlName="tickerName">
+
+            <button class="btn btn-danger d-inline" type="submit" [attr.disabled]="addProcess === 'processing' ? true : null">
+                <span *ngIf="addProcess === 'processing'" class="spinner-border spinner-border-sm" role="status"
+                    aria-hidden="true"></span>
+                Add ticker
+            </button>
+        </form>
     </div>
 
 </div>
