@@ -22,5 +22,9 @@ namespace TrradingAppBE.Application.Services.Interfaces
 		/// <param name="username"></param>
 		/// <returns></returns>
 		Task<IEnumerable<Ticker>> GetUserTickers(string username);
+
+		Task<IEnumerable<Ticker>> CreateUserTickers(string username, string[] symbols);
+
+		Task RemoveUserTickers(string username, string[] symbols);
 	}
 }

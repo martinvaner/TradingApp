@@ -40,6 +40,9 @@ namespace TradingAppBE
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			// authentication
+
+
 			// settings
 			services.Configure<ApiSettings>(Configuration.GetSection("Api")).AddSingleton(x => x.GetRequiredService<IOptions<ApiSettings>>().Value);
 
@@ -80,6 +83,17 @@ namespace TradingAppBE
 				options.AddDefaultPolicy(policy =>
 				{
 					policy.AllowAnyOrigin();
+				});
+
+			});
+
+			services.AddCors(options =>
+			{
+				options.AddPolicy("FRONTEND_CORS", options =>
+				{
+					options.WithOrigins("http://localhost:4200")
+					.AllowAnyHeader()
+					.AllowAnyMethod();
 				});
 			});
 		}

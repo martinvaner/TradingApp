@@ -28,5 +28,10 @@ namespace TradingAppBE.Infrastructure.Redis
 
 			return ticker;
 		}
+
+		public async Task Remove(string symbol)
+		{
+			await distributedCache.RemoveAsync(symbol);
+		}
 	}
 }

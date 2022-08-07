@@ -15,5 +15,7 @@ namespace TrradingAppBE.Application.Repository.Interfaces
 		/// <param name="symbol"></param>
 		/// <returns></returns>
 		Task<Ticker> Get(string symbol);
+
+		Task<IEnumerable<Ticker>> Create(string[] names);
 	}
 }

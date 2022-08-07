@@ -12,7 +12,7 @@ using TrradingAppBE.Application.Services.Interfaces;
 
 namespace TradingAppBE.Controllers
 {
-	[EnableCors]
+	[EnableCors("FRONTEND_CORS")]
 	[ApiController]
 	[Route("[controller]")]
 	public class DataController : ControllerBase
@@ -62,22 +62,44 @@ namespace TradingAppBE.Controllers
 			}
 		}
 
-		[HttpPost("subscribe")]
+		[HttpPost("subscribe/{username}")]
 		[Consumes(MediaTypeNames.Application.Json)]
-		public ActionResult Subscribe(Tickers tickers)
+		public async Task<ActionResult<IEnumerable<Ticker>> > Subscribe(string username, Tickers tickers)
 		{
 			// register new service - call subscribe in downloader
-
-			return NotFound();
+			try
+			{
+				var oldTickers = await dataService.GetUserTickers(username);
+				var newTickers = await dataService.CreateUserTickers(username, tickers.Names);
+				newTickers = newTickers.Concat(oldTickers);
+				var tickersDTO = this.mapper.Map<TickerDTO[]>(newTickers);
+				return Ok(tickersDTO);
+			}
+			catch (Exception e)
+			{
+				// TODO: log here
+				System.Diagnostics.Debug.WriteLine(e.StackTrace);
+				return Problem("Something went wrong.");
+			}
 		}
 
-		[HttpDelete("unsubscribe")]
+		[HttpDelete("unsubscribe/{username}")]
 		[Consumes(MediaTypeNames.Application.Json)]
-		public ActionResult Unsubscribe(Tickers tickers)
+		public async Task<ActionResult<IEnumerable<Ticker>> > Unsubscribe(string username, Tickers tickers)
 		{
-			// remove given tickers from TICKERS array in redis
-
-			return NotFound();
+			try
+			{
+				await dataService.RemoveUserTickers(username, tickers.Names);
+				var oldTickers = await dataService.GetUserTickers(username);
+				var tickersDTO = this.mapper.Map<TickerDTO[]>(oldTickers);
+				return Ok(tickersDTO);
+			}
+			catch (Exception e)
+			{
+				// TODO: log here
+				System.Diagnostics.Debug.WriteLine(e.StackTrace);
+				return Problem("Something went wrong.");
+			}
 		}
 	}
 }

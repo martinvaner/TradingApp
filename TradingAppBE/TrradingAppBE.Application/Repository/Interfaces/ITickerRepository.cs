@@ -10,5 +10,6 @@ namespace TrradingAppBE.Application.Repository.Interfaces
 	public interface ITickerRepository
 	{
 		Task<Ticker> Get(string symbol);
+		Task Remove(string symbol);
 	}
 }

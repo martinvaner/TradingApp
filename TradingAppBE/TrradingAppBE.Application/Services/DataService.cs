@@ -26,6 +26,39 @@ namespace TrradingAppBE.Application.Services
 			this.userTickersRepository = userTickersRepository;
 		}
 
+		public async Task<IEnumerable<Ticker>> CreateUserTickers(string username, string[] symbols)
+		{
+			// TODO: check if are unregistered ?
+
+			try
+			{
+				// post to downloader
+				var newTickers = await downloader.Create(symbols);
+				if (newTickers == null)
+				{
+					// TODO better exception
+					throw new Exception("Couldn't get tickers");
+				}
+
+				foreach (var ticker in newTickers)
+				{
+					ticker.Analytics = analyticsService.CalculateAnalytics(ticker);
+				}
+
+				// connect tickers to username
+				await userTickersRepository.CreateUserTickers(username, symbols);
+
+
+				return newTickers;
+			}
+			catch(Exception e)
+			{
+				// log here
+				// catch better exception
+				throw;
+			}
+		}
+
 		public async Task<Ticker> GetTickerData(string symbol)
 		{
 			// try get it from redis
@@ -67,6 +100,34 @@ namespace TrradingAppBE.Application.Services
 			}
 
 			return tickers;
+		}
+
+		public async Task RemoveUserTickers(string username, string[] symbols)
+		{
+			//remove connection between username and symbols
+			// if there are no users, using symbol, remove in redis and postgre
+			
+			try 
+			{
+				await userTickersRepository.RemoveUserTickers(username, symbols);
+
+				foreach (var symbol in symbols)
+				{
+					if (!await userTickersRepository.ExistsTickerConnection(symbol))
+					{
+						// remove from postgre and redis
+						await userTickersRepository.RemoveTicker(symbol);
+
+						// TODO: dont do it here - send it to downloader to unsubscribe
+						await redisRepository.Remove(symbol);
+					}
+				}
+			}
+			catch(Exception e)
+			{
+				// left blank for now
+			}
+			
 		}
 	}
 }
