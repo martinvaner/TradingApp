@@ -26,3 +26,7 @@ U projektů chybí appsettings.json, protože tam ukládám keys do api.
 Ukázka FE pro představu:
 ![image](https://user-images.githubusercontent.com/32337795/183282238-6e87555d-97c3-4e0a-8671-16bd4ebf5897.png)
 
+Architektura:
+![TradingAppArchitecture](https://user-images.githubusercontent.com/32337795/183364145-cca74191-5400-4d8b-8d0e-155e6aca5aff.jpg)
+
+
